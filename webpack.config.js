@@ -8,8 +8,6 @@ const config = {
   entry: './src/index.js',
   output: {
     path: path.resolve(process.cwd(), 'dist'),
-    filename: 'index.html',
-    publicPath: '/',
   },
   devServer: {
     open: true,
