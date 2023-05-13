@@ -8,7 +8,7 @@ const config = {
   entry: './src/index.js',
   output: {
     path: path.resolve(process.cwd(), 'dist'),
-    filename: 'bundle.js',
+    filename: 'index.html',
     publicPath: '/',
   },
   devServer: {
