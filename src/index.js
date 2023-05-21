@@ -1,13 +1,19 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as yup from 'yup';
-// import i18next from 'i18next';
+import i18next from 'i18next';
+import ru from './ru.js';
 
 const state = {
   successedUrls: [],
   website: '',
   errors: '',
 };
+yup.setLocale({
+  string: {
+    test: 'invalidUrl',
+  },
+});
 
 const schema = yup.object().shape({
   website: yup
@@ -21,16 +27,21 @@ input.addEventListener('input', (e) => {
   state.website = e.target.value;
 });
 
-// const i18n = new i18next();
-// i18n.load({
-//   ru: translationsRu,
-// });
-//
-// i18n.setLocale('ru');
+i18next.init({
+  lng: 'ru',
+  debug: true,
+  resources: {
+    ru: {
+      translation: {
+        ...ru,
+      },
+    },
+  },
+});
 
 const validationTextChange = (text, flag) => {
   const errorElement = document.querySelector('.feedback', '.m-0', '.position-absolute', '.small');
-  if (flag === true) {
+  if (flag) {
     errorElement.classList.remove('text-danger');
     errorElement.classList.add('text-success');
     errorElement.innerHTML = text;
@@ -45,20 +56,21 @@ button.addEventListener('click', (e) => {
 
   schema.validate(state)
     .then(() => {
-      validationTextChange('RSS успешно загружен', true);
+      validationTextChange(i18next.t('validationSuccess'), true);
       state.successedUrls.push(state.website);
       input.value = '';
       input.focus();
       state.website = '';
     })
     .catch((err) => {
+      console.log(err.errors)
       state.errors = err.message;
       switch (state.errors) {
         case 'website must be a valid URL':
-          validationTextChange('Ссылка должна быть валидным URL');
+          validationTextChange(i18next.t('invalidUrl'));
           break;
         case 'URL has already been used':
-          validationTextChange('RSS уже существует');
+          validationTextChange(i18next.t('urlAlreadyExists'));
           break;
         default:
           break;
