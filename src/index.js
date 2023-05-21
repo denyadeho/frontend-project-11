@@ -1,8 +1,7 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as yup from 'yup';
-// import $ from 'jquery';
-// import Popper from 'popper.js';
+// import i18next from 'i18next';
 
 const state = {
   successedUrls: [],
@@ -11,13 +10,23 @@ const state = {
 };
 
 const schema = yup.object().shape({
-  website: yup.string().test('not-duplicate', 'URL has already been used', (value) => !state.successedUrls.includes(value)).url(),
+  website: yup
+    .string()
+    .test('not-duplicate', 'URL has already been used', (value) => !state.successedUrls.includes(value))
+    .url(),
 });
 const input = document.querySelector('#url-input');
 const button = document.querySelector('.h-100', '.btn', '.btn-lg', '.btn-primary', '.px-sm-5');
 input.addEventListener('input', (e) => {
   state.website = e.target.value;
 });
+
+// const i18n = new i18next();
+// i18n.load({
+//   ru: translationsRu,
+// });
+//
+// i18n.setLocale('ru');
 
 const validationTextChange = (text, flag) => {
   const errorElement = document.querySelector('.feedback', '.m-0', '.position-absolute', '.small');
@@ -52,7 +61,7 @@ button.addEventListener('click', (e) => {
           validationTextChange('RSS уже существует');
           break;
         default:
-          console.log('biba');
+          break;
       }
     });
 });
